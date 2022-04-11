@@ -1,0 +1,27 @@
+.services-title{
+    text-align: center;
+    color: rgb(111, 111, 111);
+    font-size: 48px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+.services-container{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    text-align:center;
+}
+
+
+@media only screen and (max-width:576px) {
+    .services-container{
+        grid-template-columns: repeat(1, 1fr);
+        margin-left: 36px;
+    }
+}
+@media screen and (min-width: 577px) and (max-width: 992px) {
+    .services-container{
+        grid-template-columns: repeat(2, 1fr);
+        margin-left:36px;
+    }
+}
