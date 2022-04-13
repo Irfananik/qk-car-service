@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import auth from '../../firebase.init';
 
 const Register = () => {
     const navigate = useNavigate()
@@ -8,33 +9,37 @@ const Register = () => {
     const navigateToLogin = () => {
         navigate('/login')
     }
-    return (
-        <div className="container w-50 mx-auto p-5">
-            <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
-                </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control type="password" placeholder="Confirm Password" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Register
-                </Button>
-            </Form>
-            <p>Already you have account? <span className="text-danger" style={{cursor:'pointer'}} onClick={navigateToLogin}>Login</span> </p>
+    const [
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+        error,
+      ] = useCreateUserWithEmailAndPassword(auth);
+
+      if(user){
+          navigate('/')
+      }
+
+    const handleRegisterSubmit = event => {
+        event.preventDefault()
+        const name = event.target.name.value
+        const email = event.target.email.value
+        const password = event.target.password.value
+
+        createUserWithEmailAndPassword(email, password)
+    }
+    return (
+        <div className="container w-50 mx-auto p-5 register-form">
+            <form onSubmit={handleRegisterSubmit}>
+                <input type="text" name="name" id="" placeholder='Your Name' /> <br /> <br />
+
+                <input type="email" name="email" id="" placeholder='Email Address' required /> <br /> <br />
+
+                <input type="password" name="password" id="" placeholder='Password' required /> <br /> <br />
+                <input type="submit" value="Register" />  <br /> <br />
+            </form>
+            <p>Already you have account? <span className="text-danger" style={{ cursor: 'pointer' }} onClick={navigateToLogin}>Login</span> </p> <br /> <br />
         </div>
     );
 };
