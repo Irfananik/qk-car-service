@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
@@ -19,6 +19,11 @@ const Login = () => {
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
+
+    const [
+        sendPasswordResetEmail, 
+        sending
+    ] = useSendPasswordResetEmail(auth)
 
     const location = useLocation()
     const from = location.state?.from?.pathname || "/"
@@ -46,6 +51,12 @@ const Login = () => {
         navigate('/register')
     }
 
+    const resetPassword = async() => {
+        const email = emailRef.current.value
+        await sendPasswordResetEmail(email)
+          alert('Sent email')
+    }
+
     return (
         <div className="container  mx-auto p-5">
             <Form onSubmit={handleSubmit}>
@@ -62,7 +73,8 @@ const Login = () => {
                 </Button>
                 <p className="mt-2">{errorElement}</p>
             </Form>
-            <p className="mt-2">Are you new here? <span className="text-danger" style={{ cursor: 'pointer' }} onClick={navigateToRegister}>Register</span> </p>
+            <p className="mt-2">Are you new here? <span className="text-primary" style={{ cursor: 'pointer' }} onClick={navigateToRegister}>Register</span> </p>
+            <p className="mt-2">Reset Password? <span className="text-primary" style={{ cursor: 'pointer' }} onClick={resetPassword}>Rset Password</span> </p>
             <SocialLogin />
         </div>
     );
