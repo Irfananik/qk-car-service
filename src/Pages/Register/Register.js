@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import Loding from '../Shared/Loading/Loding';
 import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
@@ -21,6 +22,10 @@ const Register = () => {
     ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true })
 
     const [updateProfile, updating, profileError] = useUpdateProfile(auth)
+
+    if (loading || updating) {
+        return <Loding />
+    }
 
     if (user) {
         console.log("user", user)

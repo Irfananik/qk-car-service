@@ -4,6 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import Loding from '../Shared/Loading/Loding';
 
 const Login = () => {
     const emailRef = useRef('')
@@ -21,7 +22,7 @@ const Login = () => {
     ] = useSignInWithEmailAndPassword(auth);
 
     const [
-        sendPasswordResetEmail, 
+        sendPasswordResetEmail,
         sending
     ] = useSendPasswordResetEmail(auth)
 
@@ -35,6 +36,10 @@ const Login = () => {
         const password = passwordRef.current.value
 
         signInWithEmailAndPassword(email, password)
+    }
+
+    if (loading || sending) {
+        return <Loding />
     }
 
 
@@ -51,10 +56,10 @@ const Login = () => {
         navigate('/register')
     }
 
-    const resetPassword = async() => {
+    const resetPassword = async () => {
         const email = emailRef.current.value
         await sendPasswordResetEmail(email)
-          alert('Sent email')
+        alert('Sent email')
     }
 
     return (
