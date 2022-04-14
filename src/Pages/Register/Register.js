@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
@@ -18,21 +18,25 @@ const Register = () => {
         user,
         loading,
         error,
-    ] = useCreateUserWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true })
+
+    const [updateProfile, updating, profileError] = useUpdateProfile(auth)
 
     if (user) {
-        navigate('/')
+        console.log("user", user)
     }
 
-    const handleRegisterSubmit = event => {
+    const handleRegisterSubmit = async (event) => {
         event.preventDefault()
         const name = event.target.name.value
         const email = event.target.email.value
         const password = event.target.password.value
 
-        if (agrre) {
-            createUserWithEmailAndPassword(email, password)
-        }
+        await createUserWithEmailAndPassword(email, password)
+
+        await updateProfile({ displayName: name })
+        alert('Updated profile')
+        navigate('/')
     }
     return (
         <div className="container mx-auto p-5 register-form">
