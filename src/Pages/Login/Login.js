@@ -11,6 +11,8 @@ const Login = () => {
 
     const navigate = useNavigate()
 
+    let errorElement
+
     const [
         signInWithEmailAndPassword,
         user,
@@ -31,38 +33,37 @@ const Login = () => {
     }
 
 
-    if(user){
+    if (user) {
         navigate(from, { replace: true })
+    }
+
+    if (error) {
+        errorElement =
+            <p className="text-danger">Error: {error?.message}</p>
     }
 
     const navigateToRegister = () => {
         navigate('/register')
     }
-    
+
     return (
         <div className="container  mx-auto p-5">
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control ref={emailRef} type="email" placeholder="Enter email" required />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control ref={passwordRef} type="password" placeholder="Password" required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
                 <Button variant="primary" type="submit">
-                    Submit
+                    Login
                 </Button>
+                <p className="mt-2">{errorElement}</p>
             </Form>
             <p className="mt-2">Are you new here? <span className="text-danger" style={{ cursor: 'pointer' }} onClick={navigateToRegister}>Register</span> </p>
-            <SocialLogin/>
+            <SocialLogin />
         </div>
     );
 };

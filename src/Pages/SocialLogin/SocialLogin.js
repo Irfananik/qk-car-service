@@ -2,24 +2,25 @@ import React from 'react';
 import icon1 from '../../images/socialLogin/googleIcon.jpg'
 import icon2 from '../../images/socialLogin/gitHubIcon.png'
 import icon3 from '../../images/socialLogin/facebookIcon.png'
-import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
 
 const SocialLogin = () => {
-    const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+    const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth)
+    const [signInWithGithub, user1, loading1, error1] = useSignInWithGithub(auth)
     const navigate = useNavigate()
 
     let errorElement
 
 
-    if(user){
+    if(user || user1){
         navigate('/')
     }
 
-    if(error){
+    if(error || error1){
         errorElement = <div>
-        <p className="text-danger">Error: {error.message}</p>
+        <p className="text-danger">Error: {error?.message} {error1?.message}</p>
       </div>
     }
     return (
@@ -39,7 +40,7 @@ const SocialLogin = () => {
                     Login with facebook
                     <img style={{ width: '30px' }} className="img-fluid mx-4 bg-light rounded-circle bg-primary" src={icon3} alt="" />
                 </button> 
-                <button type="button" className="btn btn-dark w-50 my-3 d-block mx-auto">
+                <button onClick={() => signInWithGithub()} type="button" className="btn btn-dark w-50 my-3 d-block mx-auto">
                     Login with github
                     <img style={{ width: '30px' }} className="img-fluid mx-4 bg-light rounded-circle" src={icon2} alt="" />
                 </button>
