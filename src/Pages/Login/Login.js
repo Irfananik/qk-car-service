@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import Loding from '../Shared/Loading/Loding';
+import { Helmet } from 'react-helmet-async';
 
 const Login = () => {
     const emailRef = useRef('')
@@ -64,6 +65,7 @@ const Login = () => {
 
     return (
         <div className="container  mx-auto p-5">
+            <Helmet title="Login"/>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>

@@ -3,6 +3,7 @@ import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-fireb
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loding from '../Shared/Loading/Loding';
+import PageTitle from '../Shared/PageTitle/PageTitle';
 import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
@@ -20,6 +21,7 @@ const Register = () => {
         loading,
         error,
     ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true })
+
 
     const [updateProfile, updating, profileError] = useUpdateProfile(auth)
 
@@ -45,6 +47,7 @@ const Register = () => {
     }
     return (
         <div className="container mx-auto p-5 register-form">
+            <PageTitle title="signup" />
             <form onSubmit={handleRegisterSubmit}>
                 <input type="text" name="name" id="" placeholder='Your Name' /> <br /> <br />
 
